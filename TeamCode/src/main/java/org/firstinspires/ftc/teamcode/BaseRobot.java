@@ -159,33 +159,4 @@ public class BaseRobot extends OpMode {
         leftBackDriveMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rightBackDriveMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
-/*
-    public int get_left_front_drive_motor_enc() {
-        if (leftFrontDriveMotor.getMode() != DcMotor.RunMode.RUN_USING_ENCODER) {
-            leftFrontDriveMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        }
-        return leftFrontDriveMotor.getCurrentPosition();
-    }
-
-    public int get_right_front_drive_motor_enc() {
-        if (rightFrontDriveMotor.getMode() != DcMotor.RunMode.RUN_USING_ENCODER) {
-            rightFrontDriveMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        }
-        return rightFrontDriveMotor.getCurrentPosition();
-    }
-
-    public int get_left_back_drive_motor_enc() {
-        if (leftBackDriveMotor.getMode() != DcMotor.RunMode.RUN_USING_ENCODER) {
-            leftBackDriveMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        }
-        return leftBackDriveMotor.getCurrentPosition();
-    }
-
-    public int get_right_back_drive_motor_enc() {
-        if (rightBackDriveMotor.getMode() != DcMotor.RunMode.RUN_USING_ENCODER) {
-            rightBackDriveMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        }
-        return rightBackDriveMotor.getCurrentPosition();
-    }
-*/
 }
