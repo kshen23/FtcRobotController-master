@@ -137,8 +137,8 @@ public class BaseRobot extends OpMode {
     public void tankanum_drive(double rightPwr, double leftPwr, double lateralpwr) {
         //leftPwr *= -1;
 
-        double leftFrontPower = Range.clip(leftPwr - lateralpwr, -1.0, 1.0);
-        double leftBackPower = Range.clip(leftPwr + lateralpwr, -1.0, 1.0);
+        double leftFrontPower = Range.clip(leftPwr + lateralpwr, -1.0, 1.0);
+        double leftBackPower = Range.clip(leftPwr - lateralpwr, -1.0, 1.0);
         double rightFrontPower = Range.clip(rightPwr + lateralpwr, -1.0, 1.0);
         double rightBackPower = Range.clip(rightPwr - lateralpwr, -1.0, 1.0);
 
