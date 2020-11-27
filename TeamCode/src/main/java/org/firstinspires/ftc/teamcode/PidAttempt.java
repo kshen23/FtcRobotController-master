@@ -56,6 +56,7 @@ public class PidAttempt extends BaseRobot{
             setpoint=-90;
             PID();
             setRotatePower(rcw);
+            stage++;
         }
     }
     public void PID(){
