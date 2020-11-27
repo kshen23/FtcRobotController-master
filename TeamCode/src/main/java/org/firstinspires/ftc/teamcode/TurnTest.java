@@ -13,15 +13,9 @@ public class TurnTest extends BaseRobot{
     public void loop() {
         super.loop();
         if (timer.seconds()<3){
-            leftBackDriveMotor.setPower(-power);
-            leftFrontDriveMotor.setPower(-power);
-            rightBackDriveMotor.setPower(power);
-            rightBackDriveMotor.setPower(power);
+            rotateLeft();
         } else {
-            leftBackDriveMotor.setPower(0);
-            leftFrontDriveMotor.setPower(0);
-            rightBackDriveMotor.setPower(0);
-            rightBackDriveMotor.setPower(0);
+            stop();
         }
     }
 }
