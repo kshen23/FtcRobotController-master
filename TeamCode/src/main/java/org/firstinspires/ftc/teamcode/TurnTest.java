@@ -18,10 +18,10 @@ public class TurnTest extends BaseRobot{
             rightBackDriveMotor.setPower(power);
             rightBackDriveMotor.setPower(power);
         } else {
-            leftBackDriveMotor.setPower(-power);
-            leftFrontDriveMotor.setPower(-power);
-            rightBackDriveMotor.setPower(power);
-            rightBackDriveMotor.setPower(power);
+            leftBackDriveMotor.setPower(0);
+            leftFrontDriveMotor.setPower(0);
+            rightBackDriveMotor.setPower(0);
+            rightBackDriveMotor.setPower(0);
         }
     }
 }

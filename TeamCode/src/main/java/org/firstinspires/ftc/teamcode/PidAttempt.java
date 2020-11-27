@@ -69,10 +69,5 @@ public class PidAttempt extends BaseRobot{
         timer.reset();
     }
 
-    public void rotate (double power) {
-        leftBackDriveMotor.setPower(-power);
-        leftFrontDriveMotor.setPower(-power);
-        rightBackDriveMotor.setPower(power);
-        rightBackDriveMotor.setPower(power);
-    }
+
 }
