@@ -29,15 +29,37 @@
 
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.Range;
 
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+
+import com.qualcomm.hardware.bosch.BNO055IMU;
+import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.util.ElapsedTime;
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+
+
+
 public class BaseRobot extends OpMode {
 
 
     public DcMotor leftBackDriveMotor, rightBackDriveMotor, leftFrontDriveMotor, rightFrontDriveMotor, armMotor1, armMotor2;
+
+    BNO055IMU imu;
+    Orientation angles;
+    double oldAngle = 0;
 
     @Override
     public void init() {
@@ -45,8 +67,21 @@ public class BaseRobot extends OpMode {
         rightBackDriveMotor = hardwareMap.get(DcMotor.class, "rightBack");
         leftFrontDriveMotor = hardwareMap.get(DcMotor.class, "leftFront");
         rightFrontDriveMotor = hardwareMap.get(DcMotor.class, "rightFront");
-        rightBackDriveMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-        rightFrontDriveMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        leftBackDriveMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        leftFrontDriveMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+
+        //this stuff is for the gyro
+        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
+
+        parameters.angleUnit           = BNO055IMU.AngleUnit.DEGREES;
+        parameters.accelUnit           = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
+        parameters.calibrationDataFile = "BNO055IMUCalibration.json"; // see the calibration sample opmode
+        parameters.loggingEnabled      = true;
+        parameters.loggingTag          = "IMU";
+        parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
+        imu = hardwareMap.get(BNO055IMU.class, "imu");
+        imu.initialize(parameters);
+        //
     }
 
     public void start() {
@@ -56,84 +91,78 @@ public class BaseRobot extends OpMode {
     public void loop() {
         //double TARGET_ENC = K_PPIN_DRIVE * (inches);
     }
-/*
-    public boolean auto_drive(double power, double inches) {
 
-        double TARGET_ENC = ConstantVariables.K_PPIN_DRIVE * (inches);
+    //THIS IS THE BEGINNING OF WHAT SHOULD BE COMMENTED OUT
+///*
+//    public boolean auto_drive(double power, double inches) {
+//        double TARGET_ENC = ConstantVariables.K_PPIN_DRIVE * (inches);
+//        telemetry.addData("Target_enc: ", TARGET_ENC);
+//        double speed = power;
+//        if (Math.abs(get_right_front_drive_motor_enc()) >= TARGET_ENC) {
+//            leftFrontDriveMotor.setPower(0);
+//            leftBackDriveMotor.setPower(0);
+//            rightFrontDriveMotor.setPower(0);
+//            rightBackDriveMotor.setPower(0);
+//            return true;
+//        } else {
+//            speed = Range.clip(speed, -1, 1);
+//            leftFrontDriveMotor.setPower(speed);
+//            leftBackDriveMotor.setPower(speed);
+//            rightFrontDriveMotor.setPower(speed);
+//            rightBackDriveMotor.setPower(speed);
+//            return false;
+//        }
+//    }
+//
+//    /**
+//     * @param power:   the speed to turn at. Negative for left.
+//     * @param degrees: the number of degrees to turn.
+//     * @return Whether the target angle has been reached.
+//     */
+//
+//    public boolean auto_turn(double power, double degrees) {
+//        double TARGET_ENC = Math.abs(ConstantVariables.K_PPDEG_DRIVE * degrees);
+//        telemetry.addData("D99 TURNING TO ENC: ", TARGET_ENC);
+//        double speed = Range.clip(power, -1, 1);
+//        leftFrontDriveMotor.setPower(-speed);
+//        leftBackDriveMotor.setPower(-speed);
+//        rightFrontDriveMotor.setPower(speed);
+//        rightBackDriveMotor.setPower(speed);
+//        if (Math.abs(get_right_front_drive_motor_enc()) >= TARGET_ENC) {
+//            leftFrontDriveMotor.setPower(0);
+//            leftBackDriveMotor.setPower(0);
+//            rightFrontDriveMotor.setPower(0);
+//            rightBackDriveMotor.setPower(0);
+//            return true;
+//        } else {
+//            return false;
+//        }
+//    }
+//    public boolean auto_mecanum(double power, double inches) {
+//        double TARGET_ENC = ConstantVariables.K_PPIN_DRIVE * (inches);
+//        telemetry.addData("Target_enc: ", TARGET_ENC);
+//        //correction = checkDirection();
+//        double leftFrontPower = Range.clip(0 - power, -1.0, 1.0);
+//        double leftBackPower = Range.clip(0 + power, -1.0, 1.0);
+//        double rightFrontPower = Range.clip(0 + power, -1.0, 1.0);
+//        double rightBackPower = Range.clip(0 - power, -1.0, 1.0);
+//        if (Math.abs(get_right_front_drive_motor_enc()) >= TARGET_ENC) {
+//            leftFrontDriveMotor.setPower(0);
+//            leftBackDriveMotor.setPower(0);
+//            rightFrontDriveMotor.setPower(0);
+//            rightBackDriveMotor.setPower(0);
+//            return true;
+//        } else {
+//            leftFrontDriveMotor.setPower(leftFrontPower);
+//            leftBackDriveMotor.setPower(leftBackPower);
+//            rightFrontDriveMotor.setPower(rightFrontPower);
+//            rightBackDriveMotor.setPower(rightBackPower);
+//            return false;
+//        }
+//    }
+//
+//THIS IS THE END OF WHAT SHOULD BE COMMENTED OUT
 
-        telemetry.addData("Target_enc: ", TARGET_ENC);
-
-        double speed = power;
-
-        if (Math.abs(get_right_front_drive_motor_enc()) >= TARGET_ENC) {
-            leftFrontDriveMotor.setPower(0);
-            leftBackDriveMotor.setPower(0);
-            rightFrontDriveMotor.setPower(0);
-            rightBackDriveMotor.setPower(0);
-            return true;
-        } else {
-            speed = Range.clip(speed, -1, 1);
-            leftFrontDriveMotor.setPower(speed);
-            leftBackDriveMotor.setPower(speed);
-            rightFrontDriveMotor.setPower(speed);
-            rightBackDriveMotor.setPower(speed);
-            return false;
-        }
-    }
-*/
-    /**
-     * @param power:   the speed to turn at. Negative for left.
-     * @param degrees: the number of degrees to turn.
-     * @return Whether the target angle has been reached.
-     */
-/*
-    public boolean auto_turn(double power, double degrees) {
-        double TARGET_ENC = Math.abs(ConstantVariables.K_PPDEG_DRIVE * degrees);
-        telemetry.addData("D99 TURNING TO ENC: ", TARGET_ENC);
-
-        double speed = Range.clip(power, -1, 1);
-        leftFrontDriveMotor.setPower(-speed);
-        leftBackDriveMotor.setPower(-speed);
-        rightFrontDriveMotor.setPower(speed);
-        rightBackDriveMotor.setPower(speed);
-
-        if (Math.abs(get_right_front_drive_motor_enc()) >= TARGET_ENC) {
-            leftFrontDriveMotor.setPower(0);
-            leftBackDriveMotor.setPower(0);
-            rightFrontDriveMotor.setPower(0);
-            rightBackDriveMotor.setPower(0);
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    public boolean auto_mecanum(double power, double inches) {
-        double TARGET_ENC = ConstantVariables.K_PPIN_DRIVE * (inches);
-        telemetry.addData("Target_enc: ", TARGET_ENC);
-
-        //correction = checkDirection();
-
-        double leftFrontPower = Range.clip(0 - power, -1.0, 1.0);
-        double leftBackPower = Range.clip(0 + power, -1.0, 1.0);
-        double rightFrontPower = Range.clip(0 + power, -1.0, 1.0);
-        double rightBackPower = Range.clip(0 - power, -1.0, 1.0);
-
-        if (Math.abs(get_right_front_drive_motor_enc()) >= TARGET_ENC) {
-            leftFrontDriveMotor.setPower(0);
-            leftBackDriveMotor.setPower(0);
-            rightFrontDriveMotor.setPower(0);
-            rightBackDriveMotor.setPower(0);
-            return true;
-        } else {
-            leftFrontDriveMotor.setPower(leftFrontPower);
-            leftBackDriveMotor.setPower(leftBackPower);
-            rightFrontDriveMotor.setPower(rightFrontPower);
-            rightBackDriveMotor.setPower(rightBackPower);
-            return false;
-        }
-    }
-*/
     public void tankanum_drive(double rightPwr, double leftPwr, double lateralpwr) {
         //leftPwr *= -1;
 
@@ -159,4 +188,67 @@ public class BaseRobot extends OpMode {
         leftBackDriveMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rightBackDriveMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
+
+    public void resetAngle() {
+        angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+        double oldAngle = angles.firstAngle;
+    }
+
+    public boolean rotate(double degrees) {
+        angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+        if (Math.abs(angles.firstAngle - oldAngle) >= Math.abs(degrees)) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    public void goForward() {
+        leftFrontDriveMotor.setPower(1);
+        leftBackDriveMotor.setPower(1);
+        rightFrontDriveMotor.setPower(1);
+        rightBackDriveMotor.setPower(1);
+    }
+
+    public void goBackward() {
+        leftFrontDriveMotor.setPower(-1);
+        leftBackDriveMotor.setPower(-1);
+        rightFrontDriveMotor.setPower(-1);
+        rightBackDriveMotor.setPower(-1);
+    }
+
+    public void goLeft () {
+        leftFrontDriveMotor.setPower(1);
+        leftBackDriveMotor.setPower(-1);
+        rightFrontDriveMotor.setPower(1);
+        rightBackDriveMotor.setPower(-1);
+    }
+
+    public void goRight() {
+        leftFrontDriveMotor.setPower(-1);
+        leftBackDriveMotor.setPower(1);
+        rightFrontDriveMotor.setPower(-1);
+        rightBackDriveMotor.setPower(1);
+    }
+
+    public void stop() {
+        leftFrontDriveMotor.setPower(0);
+        leftBackDriveMotor.setPower(0);
+        rightFrontDriveMotor.setPower(0);
+        rightBackDriveMotor.setPower(0);
+    }
+    public void rotateLeft() {
+        leftFrontDriveMotor.setPower(-1);
+        leftBackDriveMotor.setPower(-1);
+        rightFrontDriveMotor.setPower(1);
+        rightBackDriveMotor.setPower(1);
+    }
+    public void rotateRight() {
+        leftFrontDriveMotor.setPower(1);
+        leftBackDriveMotor.setPower(1);
+        rightFrontDriveMotor.setPower(-1);
+        rightBackDriveMotor.setPower(-1);
+    }
 }
+
