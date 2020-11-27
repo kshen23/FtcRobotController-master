@@ -9,6 +9,7 @@ public class TurnTest extends BaseRobot{
     public void init() {
         super.init();
         timer.reset();
+        resetAngle();
     }
     public void loop() {
         super.loop();
