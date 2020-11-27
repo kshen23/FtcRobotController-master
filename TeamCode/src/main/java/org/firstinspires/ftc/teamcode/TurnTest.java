@@ -13,7 +13,7 @@ public class TurnTest extends BaseRobot{
     public void loop() {
         super.loop();
         if (timer.seconds()<3){
-            rotateLeft();
+            setRotatePower(-1);
         } else {
             stop();
         }
