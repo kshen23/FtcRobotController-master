@@ -232,4 +232,3 @@ public class BaseRobot extends OpMode {
         rightFrontDriveMotor.setPower(-power);
     }
 }
-
