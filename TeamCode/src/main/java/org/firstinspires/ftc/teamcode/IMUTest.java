@@ -64,7 +64,7 @@ public class IMUTest extends BaseRobot{
 
     public void start() {
         super.start();
-        resetAngle();
+        resetAngle2();
     }
 
     public void loop() {
@@ -94,7 +94,7 @@ public class IMUTest extends BaseRobot{
         }
 
     }
-    private void resetAngle()
+    private void resetAngle2()
     {
         lastAngles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
 
@@ -204,7 +204,7 @@ public class IMUTest extends BaseRobot{
         rightBackDriveMotor.setPower(rightPower);
 
         rotation=getAngle();
-        resetAngle();
+        resetAngle2();
     }
 }
 
