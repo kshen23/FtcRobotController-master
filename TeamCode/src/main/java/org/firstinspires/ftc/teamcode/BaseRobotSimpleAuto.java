@@ -116,15 +116,15 @@ public class BaseRobotSimpleAuto extends BaseRobot {
 
         if (runtime.seconds()<=.25) {
             //get robot to drive forward
-            goForward();
+            goForward(1);
         }
         else if (runtime.seconds() <= .5) {
             //get robot to go left
-            goLeft();
+            goRight(-1);
         }
         else if (runtime.seconds() <= .75) {
             //drive it forward again
-            goForward();
+            goForward(1);
         }
         else if (runtime.seconds() <= 1.0) {
             //Park, stop the motors
@@ -132,7 +132,7 @@ public class BaseRobotSimpleAuto extends BaseRobot {
         }
         else {
             if (!rotate(90)) {
-                rotateLeft();
+                setRotatePower(1);
             }
             else {
                 stop();
