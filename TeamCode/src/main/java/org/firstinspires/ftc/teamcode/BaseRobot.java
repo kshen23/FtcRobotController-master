@@ -204,32 +204,18 @@ public class BaseRobot extends OpMode {
         }
     }
 
-    public void goForward() {
-        leftFrontDriveMotor.setPower(1);
-        leftBackDriveMotor.setPower(1);
-        rightFrontDriveMotor.setPower(1);
-        rightBackDriveMotor.setPower(1);
+    public void goForward(int power) {
+        leftFrontDriveMotor.setPower(power);
+        leftBackDriveMotor.setPower(power);
+        rightFrontDriveMotor.setPower(power);
+        rightBackDriveMotor.setPower(power);
     }
 
-    public void goBackward() {
-        leftFrontDriveMotor.setPower(-1);
-        leftBackDriveMotor.setPower(-1);
-        rightFrontDriveMotor.setPower(-1);
-        rightBackDriveMotor.setPower(-1);
-    }
-
-    public void goLeft () {
-        leftFrontDriveMotor.setPower(1);
-        leftBackDriveMotor.setPower(-1);
-        rightFrontDriveMotor.setPower(1);
-        rightBackDriveMotor.setPower(-1);
-    }
-
-    public void goRight() {
-        leftFrontDriveMotor.setPower(-1);
-        leftBackDriveMotor.setPower(1);
-        rightFrontDriveMotor.setPower(-1);
-        rightBackDriveMotor.setPower(1);
+    public void goRight(int power) {
+        leftFrontDriveMotor.setPower(-power);
+        leftBackDriveMotor.setPower(power);
+        rightFrontDriveMotor.setPower(-power);
+        rightBackDriveMotor.setPower(power);
     }
 
     public void stop() {
@@ -237,18 +223,6 @@ public class BaseRobot extends OpMode {
         leftBackDriveMotor.setPower(0);
         rightFrontDriveMotor.setPower(0);
         rightBackDriveMotor.setPower(0);
-    }
-    public void rotateLeft() {
-        leftFrontDriveMotor.setPower(-1);
-        leftBackDriveMotor.setPower(-1);
-        rightFrontDriveMotor.setPower(1);
-        rightBackDriveMotor.setPower(1);
-    }
-    public void rotateRight() {
-        leftFrontDriveMotor.setPower(1);
-        leftBackDriveMotor.setPower(1);
-        rightFrontDriveMotor.setPower(-1);
-        rightBackDriveMotor.setPower(-1);
     }
 
     public void setRotatePower (double power) {
