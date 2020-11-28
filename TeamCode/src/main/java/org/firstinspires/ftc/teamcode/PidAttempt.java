@@ -17,7 +17,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 @Autonomous
 public class PidAttempt extends BaseRobot{
     BNO055IMU               imu;
-    int P, I, D;
+    double P, I, D;
 
     int integral, previous_error, setpoint = 0;
     double error, derivative, time, rcw;
@@ -29,9 +29,9 @@ public class PidAttempt extends BaseRobot{
     public void init() {
         super.init();
         //////////////////////////////////////////
-        P=1;
-        I=0;
-        D=0;
+        P=0.5;
+        I=0.1;
+        D=0.3;
         //////////////////////////////////////////
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
 
@@ -54,20 +54,18 @@ public class PidAttempt extends BaseRobot{
     public void loop() {
         if (stage==0) {
             setpoint=-90;
-            PID();
-            setRotatePower(rcw);
-            stage++;
+            setRotatePower(PID());
         }
     }
-    public void PID(){
+    public double PID(){
 
         error = setpoint - (angles.firstAngle); // Error = Target - Actual
         time=timer.seconds();
         this.integral += (error*time); // Integral is increased by the error*time (which is .02 seconds using normal IterativeRobot)
         derivative = (error - this.previous_error) / .02;
         this.rcw = P*error + I*this.integral + D*derivative;
-
         timer.reset();
+        return this.rcw;
     }
 
 
