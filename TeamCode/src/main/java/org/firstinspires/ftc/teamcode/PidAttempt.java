@@ -54,12 +54,12 @@ public class PidAttempt extends BaseRobot{
     public void loop() {
         if (stage==0) {
             setpoint=-90;
-            setRotatePower(PID());
+            setRotatePower(-PID(angles.firstAngle));
         }
     }
-    public double PID(){
+    public double PID(double position){
 
-        error = setpoint - (angles.firstAngle); // Error = Target - Actual
+        error = setpoint - (position); // Error = Target - Actual
         time=timer.seconds();
         this.integral += (error*time); // Integral is increased by the error*time (which is .02 seconds using normal IterativeRobot)
         derivative = (error - this.previous_error) / .02;
