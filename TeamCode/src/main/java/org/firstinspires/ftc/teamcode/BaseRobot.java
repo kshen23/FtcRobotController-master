@@ -196,12 +196,7 @@ public class BaseRobot extends OpMode {
 
     public boolean rotate(double degrees) {
         angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-        if (Math.abs(angles.firstAngle - oldAngle) >= Math.abs(degrees)) {
-            return true;
-        }
-        else {
-            return false;
-        }
+        return (Math.abs(angles.firstAngle - oldAngle) >= Math.abs(degrees));
     }
 
     public void goForward(int power) {
